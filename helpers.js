@@ -363,6 +363,18 @@ const kodiOpenVideoWindow = (file, Kodi) => {
     return Kodi.GUI.ActivateWindow(params); // eslint-disable-line new-cap
 };
 
+
+
+const kodiOpenVideoWindowFM = (file, Kodi) => {
+    let params = {
+        'window': 'videos',
+        'parameters': [file]
+    };
+
+    return Kodi.GUI.ActivateWindow(params); // eslint-disable-line new-cap
+};
+
+
 const kodiFindSong = (songTitle, Kodi) => {
 
     return Kodi.AudioLibrary.GetSongs() // eslint-disable-line new-cap
@@ -1241,6 +1253,33 @@ exports.kodiExecuteAddon = (request) => {
         .then((addon) => executeAddon(kodi, addon));
 };
 
+
+exports.kodiExecuteAddonFilm = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'searching'
+    ,category:'movie'                                                  
+		,action:'do_search'
+		,extra:requestedExtra}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
+
+exports.kodiExecuteAddonSerie = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'search'
+    ,category:'tvshow'                                                  
+		,action:'do_search'
+		,extra:requestedExtra}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
+
+
+
 const togglePartyMode = (kodi, playerid) => {
     return kodi.Player.SetPartymode({ // eslint-disable-line new-cap
         playerid: playerid,
@@ -1305,6 +1344,24 @@ const playFavourite = (request, favourite) => {
     }
 
     console.log(`do not know how to open "${favourite.type}" type favourites`);
+};
+
+exports.kodiPlayLastPvr = (request) => { // eslint-disable-line no-unused-vars
+    console.log('Play Last Pvr request received');
+    let Kodi = request.kodi;
+
+    return Kodi.Input.ExecuteAction({ // eslint-disable-line new-cap
+        'action': 'playpvrtv'
+    });
+};
+
+exports.kodiOSD = (request) => { // eslint-disable-line no-unused-vars
+    console.log('OSD request received');
+    let Kodi = request.kodi;
+
+    return Kodi.Input.ExecuteAction({ // eslint-disable-line new-cap
+        'action': 'osd'
+    });
 };
 
 
