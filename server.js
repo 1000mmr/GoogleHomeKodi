@@ -188,6 +188,10 @@ app.all('/koditestconnection', exec(Helper.kodiTestConnection));
 
 // *********************************Navigation
 
+app.all('/osd', exec(Helper.kodiOSD));
+
+app.all('/lastpvr', exec(Helper.kodiPlayLastPvr));
+
 // Navigation Down
 app.all('/navdown', exec(Helper.kodiNavDown));
 
@@ -219,6 +223,10 @@ app.all('/navhome', exec(Helper.kodiNavHome));
 app.all('/showWindow', exec(Helper.kodiShowWindow));
 
 app.all('/executeAddon', exec(Helper.kodiExecuteAddon));
+
+app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
+
+app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
 // **************************End of navigation controls
 
