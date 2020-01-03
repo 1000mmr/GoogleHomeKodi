@@ -43,7 +43,7 @@ const KodiWindows = [
         { 'TvShow Actors': 'videodb://tvshows/actors/' },
         { 'TvShow Studios': 'videodb://tvshows/studios/' },
         { 'Episodi aggiunti di recente': 'videodb://recentlyaddedepisodes/' },
-        { 'Cerca nuovi Episodi': 'plugin://plugin.video.SODbyHDs/?ewogICAgImFjdGlvbiI6ICJ1cGRhdGVfdmlkZW9saWJyYXJ5IiwKICAgICJjaGFubmVsIjogInZpZGVvbGlicmFyeSIsIAogICAgImZvbGRlciI6ICJmYWxzZSJ9' },
+        { 'Cerca nuovi Episodi': 'plugin://plugin.video.SODbyHDs/?action=update_videolibrary&channel=videolibrary&folder=False' },
         { 'Newest Episodes': 'videodb://recentlyaddedepisodes/' },
         { 'Latest Episodes': 'videodb://recentlyaddedepisodes/' },
         { 'In Progress Tv Shows': 'videodb://inprogresstvshows' },
