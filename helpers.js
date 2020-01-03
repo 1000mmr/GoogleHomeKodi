@@ -1167,7 +1167,6 @@ exports.kodiSearchYoutube = (request, response) => { // eslint-disable-line no-u
 };
 exports.kodiExecuteAddonUpdateEpi = (request) => {
     let kodi = request.kodi;
-    };
     return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/videolibrary_service.py`, kodi);
 };
 exports.kodiPlayYoutube = (request, response) => { // eslint-disable-line no-unused-vars
