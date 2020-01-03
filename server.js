@@ -230,7 +230,7 @@ app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
 
 app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
-app.all('/tvchan', exec(Helper.kodiExecuteAddonHelperchan));
+app.all('/cercaSerie', exec(Helper.kodiExecuteAddonTvchan));
 
 // **************************End of navigation controls
 
