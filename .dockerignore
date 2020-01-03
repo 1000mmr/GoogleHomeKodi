@@ -2,8 +2,10 @@ kodi-hosts.config*.js
 **/bower_components
 **/node_modules
 **/launch.json
+*.sh
 .git/
 .gitignore
-example/
-.eslintrc.json
+examples/
 .glitch-assets
+.travis.yml
+README.md
