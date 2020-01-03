@@ -1318,7 +1318,8 @@ exports.kodiExecuteAddonFilm = (request) => {
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
         addonid: 'plugin.video.SODbyHDs' ,params:{channel:'search'
-        ,mode:'movie'                                                  
+        ,mode:'movie'
+        ,contentType:'movie'                                                  
 		,action:'channel_search'
 		,text:requestedExtra}
     };
@@ -1330,7 +1331,8 @@ exports.kodiExecuteAddonSerie = (request) => {
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
         addonid: 'plugin.video.SODbyHDs' ,params:{channel:'search'
-        ,mode:'tvshow'                                                  
+        ,mode:'tvshow'
+        ,contentType:'tvshow'	
 		,action:'channel_search'
 		,text:requestedExtra}
     };
