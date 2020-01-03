@@ -116,6 +116,8 @@ const KodiWindows = [
         { 'Search': 'addons://search/' }
     ] },
     { 'PVR': [
+        { 'Guida TV': 'tvguide' },
+        { 'Canali TV': 'tvchannels' },
         { 'TV channels': 'pvr://channels/tv/*' },
         { 'Active TV recordings': 'pvr://recordings/tv/active ' },
         { 'Deleted TV recordings': 'pvr://recordings/tv/deleted' },
@@ -127,9 +129,7 @@ const KodiWindows = [
         { 'Radio timers': 'pvr://timers/radio/timers' },
         { 'Radio timer rules': 'pvr://timers/radio/rules' }
     ] },
-    { 'settings': [{ 'settings': 'settings' }] },   
-    { 'canali tv': [{ 'tv channels': 'tvchannels' }] },   
-    { 'guida tv': [{ 'tv guide': 'tvguide' }] },
+    { 'settings': [{ 'settings': 'settings' }] },
     { 'systemsettings': [{ 'system settings': 'systemsettings' }] },
     { 'servicesettings': [{ 'service settings': 'servicesettings' }] },
     { 'playersettings': [{ 'player settings': 'playersettings' }] },
