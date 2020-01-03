@@ -230,6 +230,8 @@ app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
 
 app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
+app.all('/tvchan', exec(Helper.kodiExecuteAddonHelperchan));
+
 // **************************End of navigation controls
 
 // Set subtitles

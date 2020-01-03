@@ -1339,7 +1339,13 @@ exports.kodiExecuteAddonSerie = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
-
+exports.kodiExecuteAddonHelperchan = (request) => {
+    let kodi = request.kodi;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'script.vocalhelper/lib/tvchan'}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
 
 const togglePartyMode = (kodi, playerid) => {
     return kodi.Player.SetPartymode({ // eslint-disable-line new-cap
