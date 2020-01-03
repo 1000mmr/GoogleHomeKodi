@@ -1339,6 +1339,16 @@ exports.kodiExecuteAddonSerie = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
+exports.kodiExecuteAddonUpdateEpi = (request) => {
+    let kodi = request.kodi;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'videolibrary'
+        ,folder:'False'
+		,action:'update_videolibrary'}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
+
 exports.kodiExecuteAddonTvchan = (request) => {
     let kodi = request.kodi;
     let params = { // eslint-disable-line new-cap
