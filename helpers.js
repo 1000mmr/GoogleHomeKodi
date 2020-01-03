@@ -1068,7 +1068,7 @@ exports.kodiBingeWatchTvshow = (request, response) => { // eslint-disable-line n
 exports.kodiPlayEpisodeHandler = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
-    let splittedQuery = fullQuery.split('season');
+    let splittedQuery = fullQuery.split('stagione');
     let tvshowTitle = splittedQuery[0].trim();
     let seasonNum = splittedQuery[1].trim();
     let episodeNum = request.query.e.trim();
