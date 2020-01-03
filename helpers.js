@@ -1,6 +1,6 @@
 'use strict'; // eslint-disable-line strict
 
-const { wordsToNumbers } = require('words-to-numbers');
+
 const youtubeSearch = require('youtube-search');
 const Fuse = require('fuse.js');
 const KodiWindows = require('./kodi-connection/windows.js')();
@@ -433,18 +433,6 @@ const kodiGetMovieGenres = (Kodi) => {
     });
 };
 
-const getDirecoryContents = (kodi, path) => {
-    return kodi.Files.GetDirectory({ // eslint-disable-line new-cap
-        directory: path
-    })
-    .then((kodiResponse) => {
-        if (!(kodiResponse && kodiResponse.result && kodiResponse.result.files && kodiResponse.result.files.length > 0)) {
-            throw new Error('directory was empty');
-        }
-        return kodiResponse.result.files;
-    });
-};
-
 const kodiGetProfiles = (Kodi) => {
     return Kodi.Profiles.GetProfiles() // eslint-disable-line new-cap
         .then((profiles) => {
@@ -546,30 +534,14 @@ const kodiSeek = (Kodi, seekValue) => {
 
 const getRequestedNumberOrDefaulValue = (request, defaultValue) => {
 
-    if (!request.query || !request.query.q) {
-        console.log('no number given, falling back:', defaultValue);
-        return defaultValue;
+    if (request.query && request.query.q && !isNaN(request.query.q.trim())) {
+        let requestedNumber = parseInt(request.query.q.trim());
+
+        console.log('parsed valid number:', requestedNumber);
+        return requestedNumber;
     }
 
-    let requestNumber = request.query.q.trim();
-
-    console.log('trying to parse: ', requestNumber);
-
-    if (!isNaN(requestNumber)) {
-        let plainNumber = parseInt(requestNumber);
-
-        console.log('parsed valid plain number:', plainNumber);
-        return plainNumber;
-    }
-
-    let wordNumber = wordsToNumbers(requestNumber);
-
-    if (!isNaN(wordNumber)) {
-        console.log('parsed valid word number:', wordNumber);
-        return wordNumber;
-    }
-
-    console.log('not able to parse as number, falling back:', defaultValue);
+    console.log(`could not parse input '${request.query.q}' as number`);
     return defaultValue;
 };
 
@@ -860,24 +832,6 @@ exports.playercontrol = (request, response) => { // eslint-disable-line no-unuse
     return kodiGoTo(Kodi, playlistindex);
 };
 
-exports.kodiPlayPlaylist = (request, response) => { // eslint-disable-line no-unused-vars
-    let Kodi = request.kodi;
-    const playlistName = request.query.q.trim();
-
-    console.log(`Request for playing playlist "${playlistName}" received!`);
-
-    return getDirecoryContents(Kodi, `special://profile/playlists/music`)
-    .then((lists) => fuzzySearchBestMatch(lists, playlistName))
-    .catch(() =>
-        getDirecoryContents(Kodi, `special://profile/playlists/video`)
-            .then((lists) => fuzzySearchBestMatch(lists, playlistName)))
-    .then((playlist) => Kodi.Player.Open({ // eslint-disable-line new-cap
-        item: {
-            directory: playlist.file
-        }
-    }));
-};
-
 exports.kodiStop = (request, response) => { // eslint-disable-line no-unused-vars
     console.log('Stop request received');
     let Kodi = request.kodi;
@@ -1158,14 +1112,6 @@ exports.kodiPlayChannelByNumber = (request, response) => { // eslint-disable-lin
     return kodiPlayChannel(request, response, pvrFuzzySearchOptions);
 };
 
-exports.kodiSearchYoutube = (request, response) => { // eslint-disable-line no-unused-vars
-    let searchString = request.query.q.trim();
-    let kodi = request.kodi;
-
-    return kodiOpenVideoWindow(
-        `plugin://plugin.video.youtube/kodion/search/query?q=${searchString}`, kodi);
-};
-
 exports.kodiPlayYoutube = (request, response) => { // eslint-disable-line no-unused-vars
     let searchString = request.query.q.trim();
     let maxItems = request.query.max !== undefined ? parseInt(request.query.max) : 15;
@@ -1198,15 +1144,10 @@ exports.kodiPlayYoutube = (request, response) => { // eslint-disable-line no-unu
         })).then((foundVideos) => {
 
             let items = foundVideos
-                .filter((video) => video.filetype === 'file' || video.kind === 'youtube#video')
+                .filter((video) => video.filetype === 'file')
                 .map((video) => ({
                     file: `plugin://plugin.video.youtube/play/?video_id=${video.id}`
                 }));
-
-            if (items.length === 0) {
-                console.log(foundVideos);
-                return new Error(`No playable videos found!`);
-            }
 
             console.log(`Playing ${items.length} youtube videos:`);
 
@@ -1317,10 +1258,10 @@ exports.kodiExecuteAddonFilm = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
-        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'search'
-        ,mode:'movie'                                                  
-		,action:'channel_search'
-		,text:requestedExtra}
+        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'searching'
+    ,category:'movie'                                                  
+		,action:'do_search'
+		,extra:requestedExtra}
     };
     return kodi.Addons.ExecuteAddon(params);
 };
@@ -1330,9 +1271,9 @@ exports.kodiExecuteAddonSerie = (request) => {
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
         addonid: 'plugin.video.SODbyHDs' ,params:{channel:'search'
-        ,mode:'tvshow'                                                  
-		,action:'channel_search'
-		,text:requestedExtra}
+    ,category:'tvshow'                                                  
+		,action:'do_search'
+		,extra:requestedExtra}
     };
     return kodi.Addons.ExecuteAddon(params);
 };

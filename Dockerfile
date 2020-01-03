@@ -1,18 +1,10 @@
 #### Step 1 ####
-FROM node:alpine as linter
-
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run lint
-
-#### Step 2 ####
-FROM node:alpine as production-builder
+FROM node:alpine as builder
 
 COPY package*.json ./
 RUN npm install --production
 
-#### Step 3 ####
+#### Step 2 ####
 FROM node:alpine as app
 
 ENV GOOGLE_HOME_KODI_CONFIG="/config/kodi-hosts.config.js"
@@ -23,7 +15,7 @@ VOLUME /config
 WORKDIR /home/node/app
 
 RUN apk add --no-cache tini
-COPY --from=production-builder node_modules ./node_modules
+COPY --from=builder node_modules ./node_modules
 COPY . .
 
 USER node

@@ -1,60 +1,52 @@
-'use strict';
+
+'use strict'; // eslint-disable-line strict
 
 const Helper = require('./helpers.js');
 
-let lastUsedLanguage = ``;
-let localizedPhrases = null;
-
-const testRegexNamedGroupesFeature = () => {
-
-    let match = false;
-
-    try {
-        match = `named group test`.match(`(?<group>test)`);
-    } catch (error) {
-        match = false;
-    }
-
-    if (!match) {
-        throw new Error(
-            `regex named groups test failed. ` +
-            `You need nodejs version 10 or higher for the broker to work!`);
-    }
-};
+let last_lang = "";
+let lang_dictionary = null;
 
 exports.processRequest = (request, response) => {
 
-    testRegexNamedGroupesFeature();
+    let phrase = request.query.phrase;
+    let lang = request.query.lang;
 
-    let phrase = request.query.phrase.toLowerCase();
-    let language = request.query.lang || `en`;
-
-    if (lastUsedLanguage !== language) {
-        // reload lang file if language has changed
-        localizedPhrases = require(`./broker/${language}.json`);
-        lastUsedLanguage = language;
+    if(!lang) {
+        lang = "en";
     }
 
-    console.log(`Broker processing phrase: '${phrase}' (${language})`);
+    if(last_lang != lang) {
+        //reload lang file if language has changed
+        lang_dictionary = require('./broker/' + lang + '.json')
+        last_lang = lang;
+    }
 
-    for (let key in localizedPhrases) {
+    console.log('Broker processing phrase ' + phrase);
 
-        let match = phrase.match(`^${localizedPhrases[key]}`);
+    //find first match
+    for(var key in lang_dictionary) {
 
-        if (match) {
+        let result = phrase.match("^" + lang_dictionary[key]);
+        if(result) {
 
-            // copy named groups to request.query
-            for (let g in match.groups) {
-                if (match.groups[g]) {
-                    request.query[g] = match.groups[g];
+            //copy named groups to request.query
+            for(var g in result.groups) {
+                if(result.groups[g]) {
+                    request.query[g] = result.groups[g];
                 }
             }
 
-            let endpoint = key.split(`:`, 1)[0];
-
-            // call original handler
-            return Helper[endpoint](request, response);
+            //remove : suffix
+            var pos = key.indexOf(':');
+            key = key.substring(0, pos != -1 ? pos : key.length);
+    
+            //call original handler by key
+            return Helper[key](request, response);
         }
+        
     }
-    throw new Error(`Broker unknown phrase: '${phrase}' (${language})`);
+    return new Promise(() => {
+        console.log('Broker unknown phrase');
+        response.send("Broker: unknown phrase");
+    });
 };
