@@ -1379,7 +1379,7 @@ exports.kodiToggleFullscreen = (request) => { // eslint-disable-line no-unused-v
     let Kodi = request.kodi;
 
     return Kodi.Input.ExecuteAction({ // eslint-disable-line new-cap
-        'action': 'Fullscreen'
+        'action': 'FullScreen'
     });
 };
 
