@@ -1165,7 +1165,11 @@ exports.kodiSearchYoutube = (request, response) => { // eslint-disable-line no-u
     return kodiOpenVideoWindow(
         `plugin://plugin.video.youtube/kodion/search/query?q=${searchString}`, kodi);
 };
-
+exports.kodiExecuteAddonUpdateEpi = (request) => {
+    let kodi = request.kodi;
+    };
+    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/videolibrary_service.py`, kodi);
+};
 exports.kodiPlayYoutube = (request, response) => { // eslint-disable-line no-unused-vars
     let searchString = request.query.q.trim();
     let maxItems = request.query.max !== undefined ? parseInt(request.query.max) : 15;
@@ -1339,15 +1343,11 @@ exports.kodiExecuteAddonSerie = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
-exports.kodiExecuteAddonUpdateEpi = (request) => {
-    let kodi = request.kodi;
-    let params = { // eslint-disable-line new-cap
-        addonid: 'plugin.video.SODbyHDs' ,params:{channel:'videolibrary'
-        ,folder:'False'
-		,action:'update_videolibrary'}
-    };
-    return kodi.Addons.ExecuteAddon(params);
-};
+
+
+
+
+
 
 exports.kodiExecuteAddonTvchan = (request) => {
     let kodi = request.kodi;
