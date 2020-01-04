@@ -230,6 +230,8 @@ app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
 
 app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
+app.all('/spotysearch', exec(Helper.kodiExecuteAddonSpotySearch));
+
 app.all('/updateepi', exec(Helper.kodiExecuteAddonUpdateEpi));
 
 app.all('/tvchan', exec(Helper.kodiExecuteAddonTvchan));

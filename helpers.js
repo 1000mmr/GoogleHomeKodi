@@ -1342,7 +1342,15 @@ exports.kodiExecuteAddonSerie = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
-
+exports.kodiExecuteAddonSpotySearch = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.audio.spotify' ,params:{action:'search'
+		,kb:requestedExtra}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
 
 
 
@@ -1379,7 +1387,7 @@ exports.kodiToggleFullscreen = (request) => { // eslint-disable-line no-unused-v
     let Kodi = request.kodi;
 
     return Kodi.Input.ExecuteAction({ // eslint-disable-line new-cap
-        'action': 'fullscreen'
+        'action': 'Fullscreen'
     });
 };
 
