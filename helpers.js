@@ -585,7 +585,7 @@ const kodiRecChannel = (request, response, fuzzySearchOptions,chTitle,startNum,s
 exports.kodiRecordChannelByName = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
-    let splittedQuery = fullQuery.split('dalle ore');
+    let splittedQuery = fullQuery.split('inizio');
     let chTitle = splittedQuery[0].trim();
     let startNum = splittedQuery[1].trim();
     let stopNum = request.query.e.trim();
