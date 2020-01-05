@@ -537,7 +537,7 @@ const kodiPlayChannel = (request, response, searchOptions) => {
         });
 };
 
-const kodiRecChannel = (request, response, fuzzySearchOptions,chTitle,startNum,stopNum) => {
+const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNum) => {
     let reqChannel = chTitle;
 
     console.log(`PVR channel request received to play "${reqChannel}"`);
