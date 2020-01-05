@@ -170,6 +170,7 @@ app.all('/shuffleshow', exec(Helper.kodiShuffleShowHandler));
 
 // Parse request to watch a PVR channel by name
 // Request format:     http://[THIS_SERVER_IP_ADDRESS]/playpvrchannelbyname?q=[CHANNEL_NAME]
+app.all('/recpvrchannelbyname', exec(Helper.kodiRecordChannelByName));
 app.all('/playpvrchannelbyname', exec(Helper.kodiPlayChannelByName));
 
 // Parse request to search for a youtube video. The video will be played using the youtube addon.

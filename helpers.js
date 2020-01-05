@@ -537,6 +537,63 @@ const kodiPlayChannel = (request, response, searchOptions) => {
         });
 };
 
+const kodiRecChannel = (request, response, fuzzySearchOptions,chTitle,startNum,stopNum) => {
+    let reqChannel = chTitle;
+
+    console.log(`PVR channel request received to play "${reqChannel}"`);
+
+    // Build filter to search for all channel under the channel group
+    let param = {
+        channelgroupid: 'alltv',
+        properties: ['uniqueid', 'channelnumber']
+    };
+    let Kodi = request.kodi;
+
+    return Kodi.PVR.GetChannels(param) // eslint-disable-line new-cap
+        .then((channels) => {
+            if (!(channels && channels.result && channels.result.channels && channels.result.channels.length > 0)) {
+                throw new Error('no channels were found');
+            }
+
+            let rChannels = channels.result.channels;
+
+            // We need to override getFn, as we're trying to search an integer.
+            searchOptions.getFn = (obj, path) => {
+                if (Number.isInteger(obj[path])) {
+                    return JSON.stringify(obj[path]);
+                }
+                return obj[path];
+            };
+
+            // Create the fuzzy search object
+            let fuse = new Fuse(rChannels, searchOptions);
+            let searchResult = fuse.search(reqChannel);
+
+            if (searchResult.length === 0) {
+                throw new Error('channels not found');
+            }
+            let channelFound = searchResult[0];
+
+            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid})`);
+            return kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
+                   'window': 'videos',
+                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/${channelFound.label}/${channelFound.channelid}/${startNum}/${stopNum}']
+            });
+        });
+};
+
+exports.kodiRecordChannelByName = (request, response) => { // eslint-disable-line no-unused-vars
+    tryActivateTv(request, response);
+    let fullQuery = request.query.q.toLowerCase();
+    let splittedQuery = fullQuery.split('dalle ore');
+    let chTitle = splittedQuery[0].trim();
+    let startNum = splittedQuery[1].trim();
+    let stopNum = request.query.e.trim();
+
+    console.log(`Specific Episode request received to play ${chTitle} Season ${startNum} Episode ${stopNum}`);
+    return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,startNum,stopNum);
+};
+
 const kodiSeek = (Kodi, seekValue) => {
     return Promise.all([
         Kodi.Player.Seek({ playerid: AUDIO_PLAYER, value: seekValue }), // eslint-disable-line new-cap
