@@ -537,10 +537,10 @@ const kodiPlayChannel = (request, response, searchOptions) => {
         });
 };
 
-const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNum) => {
+const kodiRecChannel = (request, response, searchOptions,chTitle,fullQuery) => {
     let reqChannel = chTitle;
 
-    console.log(`PVR channel request received to play "${reqChannel}"`);
+    console.log(`PVR channel request received to search "${reqChannel}"`);
 
     // Build filter to search for all channel under the channel group
     let param = {
@@ -574,10 +574,10 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             }
             let channelFound = searchResult[0];
 
-            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid})`);
+            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${fullQuery}`);
             return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
                    'window': 'videos',
-                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/${channelFound.label}/${channelFound.channelid}/${startNum}/${stopNum}']
+                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.id + '/' + fullQuery]
             });
         });
 };
@@ -585,13 +585,11 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
 exports.kodiRecordChannelByName = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
-    let splittedQuery = fullQuery.split('inizio');
+    let splittedQuery = fullQuery.split('data');
     let chTitle = splittedQuery[0].trim();
-    let startNum = splittedQuery[1].trim();
-    let stopNum = request.query.e.trim();
 
-    console.log(`Specific Episode request received to play ${chTitle} Season ${startNum} Episode ${stopNum}`);
-    return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,startNum,stopNum);
+    console.log(`Rec query ${chTitle} fullquery ${fullQuery}`);
+    return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,fullQuery);
 };
 
 const kodiSeek = (Kodi, seekValue) => {
