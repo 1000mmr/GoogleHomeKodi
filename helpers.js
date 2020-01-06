@@ -568,7 +568,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             // Create the fuzzy search object
             let fuse = new Fuse(rChannels, searchOptions);
             let searchResult = fuse.search(reqChannel);
-
+            let stopNum = JSON.stringify(stopNum)
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
