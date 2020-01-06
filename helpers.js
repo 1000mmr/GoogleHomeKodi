@@ -13,7 +13,7 @@ const fuzzySearchOptions = {
     caseSensitive: false, // Don't care about case whenever we're searching titles by speech
     includeScore: false, // Don't need the score, the first item has the highest probability
     shouldSort: true, // Should be true, since we want result[0] to be the item with the highest probability
-    threshold: 0.4, // 0 = perfect match, 1 = match all..
+    threshold: 0.2, // 0 = perfect match, 1 = match all..
     location: 0,
     distance: 100,
     tokenize: true,
@@ -577,7 +577,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startNum} - ${stopNum}`);
             return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
                    'window': 'videos',
-                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.channelid + '/' + startNum + '/' + startNum]
+                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.channelid + '/' + startNum + '/' + stopNum]
             });
         });
 };
