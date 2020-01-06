@@ -629,7 +629,7 @@ exports.kodiRecordChannelByName = (request, response) => { // eslint-disable-lin
 
 exports.kodiDeleteRecord = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
-
+    let Kodi = request.kodi;
     return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
             'window': 'videos',
             'parameters': ['plugin://plugin.video.iptv.recorder/delete_all_jobs']
