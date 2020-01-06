@@ -1,6 +1,6 @@
 'use strict'; // eslint-disable-line strict
 
-
+const { wordsToNumbers } = require('words-to-numbers');
 const youtubeSearch = require('youtube-search');
 const Fuse = require('fuse.js');
 const KodiWindows = require('./kodi-connection/windows.js')();
@@ -13,7 +13,7 @@ const fuzzySearchOptions = {
     caseSensitive: false, // Don't care about case whenever we're searching titles by speech
     includeScore: false, // Don't need the score, the first item has the highest probability
     shouldSort: true, // Should be true, since we want result[0] to be the item with the highest probability
-    threshold: 0.2, // 0 = perfect match, 1 = match all..
+    threshold: 0.4, // 0 = perfect match, 1 = match all..
     location: 0,
     distance: 100,
     tokenize: true,
@@ -227,17 +227,18 @@ const getFilteredMovies = (request, param) => {
         });
 };
 
-const kodiFindMovie = (movieTitle, Kodi) => {
-    return Kodi.VideoLibrary.GetMovies({ // eslint-disable-line new-cap
-        properties: ['originaltitle']
-    })
-    .then((movies) => {
-        if (!(movies && movies.result && movies.result.movies && movies.result.movies.length > 0)) {
-            throw new Error('Your kodi library does not contain a single movie!');
-        }
+const kodiFindMovie = (request, movieTitle) => {
+    return request.kodi.VideoLibrary
+        .GetMovies({ // eslint-disable-line new-cap
+            properties: ['originaltitle', 'file']
+        })
+        .then((movies) => {
+            if (!(movies && movies.result && movies.result.movies && movies.result.movies.length > 0)) {
+                throw new Error('Your kodi library does not contain a single movie!');
+            }
 
-        return fuzzySearchBestMatch(movies.result.movies, movieTitle, ['label', 'originaltitle']);
-    });
+            return fuzzySearchBestMatch(movies.result.movies, movieTitle, ['label', 'originaltitle']);
+        });
 };
 
 const kodiFindTvShow = (request, tvshowTitle) => {
@@ -320,7 +321,7 @@ const kodiFindMostRecentlyAddedEpisode = (request) => {
 };
 
 const kodiFindSpecificEpisode = (request, tvShow, seasonNum, episodeNum) => {
-    console.log(`Searching Season ${seasonNum}, episode ${episodeNum} of Show ${tvShow}...`);
+    console.log(`Searching Season ${seasonNum}, episode ${episodeNum} of Show '${tvShow.label}'...`);
 
     // Build filter to search for specific season and episode number
     let param = {
@@ -526,8 +527,11 @@ const kodiPlayChannel = (request, response, searchOptions) => {
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
-            let channelFound = searchResult[0];
-
+            var channelFound = searchResult[0];
+            var channelName = channelFound.label;
+            if ((channelName.includes("+1")) && !(reqChannel.includes("+1"))) {
+                var channelFound = searchResult[1];
+            }
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid})`);
             return Kodi.Player.Open({ // eslint-disable-line new-cap
                 item: {
@@ -645,30 +649,30 @@ const kodiSeek = (Kodi, seekValue) => {
 
 const getRequestedNumberOrDefaulValue = (request, defaultValue) => {
 
-    if (request.query && request.query.q && !isNaN(request.query.q.trim())) {
-        let requestedNumber = parseInt(request.query.q.trim());
-							
-	 
-
-											   
-
-													
-
-								
-												  
-
-        console.log('parsed valid number:', requestedNumber);
-        return requestedNumber;
+    if (!request.query || !request.query.q) {
+        console.log('no number given, falling back:', defaultValue);
+        return defaultValue;
     }
 
-    console.log(`could not parse input '${request.query.q}' as number`);
+    let requestNumber = request.query.q.trim();
 
-							 
-															 
-						  
-	 
+    console.log('trying to parse: ', requestNumber);
 
-																			
+    if (!isNaN(requestNumber)) {
+        let plainNumber = parseInt(requestNumber);
+
+        console.log('parsed valid plain number:', plainNumber);
+        return plainNumber;
+    }
+
+    let wordNumber = wordsToNumbers(requestNumber);
+
+    if (!isNaN(wordNumber)) {
+        console.log('parsed valid word number:', wordNumber);
+        return wordNumber;
+    }
+
+    console.log('not able to parse as number, falling back:', defaultValue);
     return defaultValue;
 };
 
@@ -805,7 +809,41 @@ exports.kodiSetSubs = (request, response) => { // eslint-disable-line no-unused-
 
     throw new Error('unknown subs command', setsubs);
 };
+// Set subtitles on
+exports.kodiSetSubsOn = (request, response) => { // eslint-disable-line no-unused-vars
+    let Kodi = request.kodi;
 
+    console.log('Change subtitles on received');
+
+    return Kodi.Player.SetSubtitle({ 'playerid': 1, 'subtitle': 'on' }); // eslint-disable-line new-cap
+};
+
+// Set subtitles off
+exports.kodiSetSubsOff = (request, response) => { // eslint-disable-line no-unused-vars
+    let Kodi = request.kodi;
+
+    console.log('Change subtitles off received');
+
+    return Kodi.Player.SetSubtitle({ 'playerid': 1, 'subtitle': 'off' }); // eslint-disable-line new-cap
+};
+
+// Set subtitles previous
+exports.kodiSetSubsPrevious = (request, response) => { // eslint-disable-line no-unused-vars
+    let Kodi = request.kodi;
+
+    console.log('Change subtitles previous received');
+
+    return Kodi.Player.SetSubtitle({ 'playerid': 1, 'subtitle': 'previous' }); // eslint-disable-line new-cap
+};
+
+// Set subtitles next
+exports.kodiSetSubsNext = (request, response) => { // eslint-disable-line no-unused-vars
+    let Kodi = request.kodi;
+
+    console.log('Change subtitles next received');
+
+    return Kodi.Player.SetSubtitle({ 'playerid': 1, 'subtitle': 'next' }); // eslint-disable-line new-cap
+};
 // Set subtitles direct
 exports.kodiSetSubsDirect = (request, response) => { // eslint-disable-line no-unused-vars
     let Kodi = request.kodi;
@@ -1104,11 +1142,11 @@ exports.kodiPlayMovie = (request, response) => {
 
     let movieTitle = request.query.q;
     let seconds = request.query.delay !== undefined ? parseInt(request.query.delay) : 0;
-    let Kodi = request.kodi;
+							
 
     console.log(`Movie request received to play "${movieTitle}"`);
     return sleep(seconds)
-        .then(() => kodiFindMovie(movieTitle, Kodi))
+        .then(() => kodiFindMovie(request, movieTitle))
         .then((movie) => playMovie(request, movie));
 };
 
@@ -1117,11 +1155,11 @@ exports.kodiResumeMovie = (request, response) => {
 
     let movieTitle = request.query.q;
     let seconds = request.query.delay !== undefined ? parseInt(request.query.delay) : 0;
-    let Kodi = request.kodi;
+							
 
     console.log(`Movie request received to resume "${movieTitle}"`);
     return sleep(seconds)
-        .then(() => kodiFindMovie(movieTitle, Kodi))
+        .then(() => kodiFindMovie(request, movieTitle))
         .then((movie) => resumeMovie(request, movie));
 };
 
@@ -1166,24 +1204,22 @@ exports.kodiBingeWatchTvshow = (request, response) => { // eslint-disable-line n
 
 exports.kodiPlayEpisodeHandler = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
+    let splitter = request.query.splitter || 'stagione';
     let fullQuery = request.query.q.toLowerCase();
-    let splittedQuery = fullQuery.split('stagione');
+    let splittedQuery = fullQuery.split(splitter.toLowerCase());
+
+    if (splittedQuery.length !== 2) {
+        throw new Error(`Could not split season from episode info '${fullQuery}' with splitter '${splitter}'`);
+    }
+
     let tvshowTitle = splittedQuery[0].trim();
     let seasonNum = splittedQuery[1].trim();
     let episodeNum = request.query.e.trim();
 
-    console.log(`Specific Episode request received to play ${tvshowTitle} Season ${seasonNum} Episode ${episodeNum}`);
+    console.log(`Specific Episode request received to play '${tvshowTitle}' (Season ${seasonNum}, Episode ${episodeNum})`);
 
     return kodiFindTvShow(request, tvshowTitle)
         .then((tvShow) => kodiFindSpecificEpisode(request, tvShow, seasonNum, episodeNum))
-        .then((episode) => playTvShowEpisode(request, episode));
-};
-
-exports.kodiPlayRecentEpisodeHandler = (request, response) => { // eslint-disable-line no-unused-vars
-    tryActivateTv(request, response);
-
-    console.log(`Play most recently added episode request received`);
-    return kodiFindMostRecentlyAddedEpisode(request, response)
         .then((episode) => playTvShowEpisode(request, episode));
 };
 
@@ -1215,6 +1251,27 @@ exports.kodiOpenTvshow = (request) => {
 
     return kodiFindTvShow(request, tvshowTitle)
         .then((tvShow) => kodiOpenVideoWindow(tvShow.file, request.kodi));
+};
+exports.kodiOpenMovie = (request) => {
+    let movieTitle = request.query.q;
+    let kodi = request.kodi;
+
+    return kodi.Input.Home() // eslint-disable-line new-cap
+        .then(() => kodi.Input.Back()) // eslint-disable-line new-cap
+        .then(() => kodiFindMovie(request, movieTitle))
+        .then((movie) => kodi.Playlist.Clear({ // eslint-disable-line new-cap
+            playlistid: VIDEO_PLAYER
+        })
+            .then(() => kodi.Playlist.Add({ // eslint-disable-line new-cap
+                item: { movieid: movie.movieid },
+                playlistid: VIDEO_PLAYER
+            }))
+            .then(() => kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
+                window: 'videoplaylist'
+            }))
+            .then(() => sleep(1)
+                .then(() => kodi.Input.Info()) // eslint-disable-line new-cap
+            ));
 };
 
 // Start a full library scan
