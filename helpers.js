@@ -463,7 +463,7 @@ const tryPlayingChannelInGroup = (searchOptions, reqChannel, chGroups, currGroup
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'Tutti i canali',
+        channelgroupid: 'alltv',
         properties: ['uniqueid', 'channelnumber']
     };
 
@@ -499,7 +499,7 @@ const kodiPlayChannel = (request, response, searchOptions) => {
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'Tutti i canali',
+        channelgroupid: 'alltv',
         properties: ['uniqueid', 'channelnumber']
     };
     let Kodi = request.kodi;
@@ -549,7 +549,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'Tutti i canali',
+        channelgroupid: 'alltv',
         properties: ['uniqueid', 'channelnumber']
     };
     let Kodi = request.kodi;
