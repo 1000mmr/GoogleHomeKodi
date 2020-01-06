@@ -22,6 +22,10 @@
 const KodiWindows = [
     { 'Videos': [
         { '': 'library://video/' },
+        { 'Registrazioni TV': '/storage/Downloads/TV/' },
+        { 'Registrazioni in corso': 'plugin://plugin.video.iptv.recorder/jobs' },
+        { 'Downloads web': '/storage/videos/Download_Web/' },
+        { 'Donwload torrent': 'smb://192.168.178.20/TORRENT/' },
         { 'Libreria Film': 'videodb://movies/' },
         { 'Generi Film': 'videodb://movies/genres/' },
         { 'Film': 'videodb://movies/titles/' },
@@ -81,11 +85,11 @@ const KodiWindows = [
         { 'Videoteca Film': 'plugin://plugin.video.SODbyHDs/?ewogICAgImFjdGlvbiI6ICJsaXN0X21vdmllcyIsIAogICAgImNhdGVnb3J5IjogIlZpZGVvdGVjYSBkaSBGaWxtIiwgCiAgICAiY2hhbm5lbCI6ICJ2aWRlb2xpYnJhcnkiLCAKICAgICJmYW5hcnQiOiAiIiwgCiAgICAiaW5mb0xhYmVscyI6IHsKICAgICAgICAibWVkaWF0eXBlIjogIm1vdmllIiwgCiAgICAgICAgInBsb3QiOiAiUXVhIMOoIGRvdmUgdmVuZ29ubyBzYWx2YXRpIGkgRmlsbSBhZ2dpdW50aSBhbGxhIFZJREVPVEVDQS4iCiAgICB9LCAKICAgICJ0aHVtYm5haWwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tLzEwMDBtbXIvaWNvbi9tYXN0ZXIvdGh1bWJfdmlkZW9saWJyYXJ5X21vdmllLnBuZyIsIAogICAgInRpdGxlIjogIlZpZGVvdGVjYSBGaWxtIiwgCiAgICAidG90YWxJdGVtcyI6IDAsIAogICAgIndhbnRlZCI6ICJWaWRlb3RlY2EgRmlsbSIKfQ%3d%3d' }
     ] },
     { 'Music': [
-        { '': 'library://music/' },
+        { 'Libreria Musica': 'library://music/' },
         { 'Genres': 'musicdb://genres/' },
-        { 'Artists': 'musicdb://artists/' },
+        { 'Artisti': 'musicdb://artists/' },
         { 'Albums': 'musicdb://albums/' },
-        { 'Song': 'musicdb://songs/' },
+        { 'Canzoni': 'musicdb://songs/' },
         { 'Top 100': 'musicdb://top100/' },
         { 'Top 100 Songs': 'musicdb://top100/songs/' },
         { 'Top 100 Albums': 'musicdb://top100/albums/' },
@@ -97,7 +101,7 @@ const KodiWindows = [
         { 'Files': 'sources://music/' },
         { 'Playlists': 'special://musicplaylists/' },
         { 'Music Add-ons': 'addons://sources/audio/' },
-        { 'spotify explore': 'plugin://plugin.audio.spotify/?action=browse_main_explore' },
+        { 'spotify': 'plugin://plugin.audio.spotify/?action=browse_main_explore' },
         { 'spotify featured playlists': 'plugin://plugin.audio.spotify/?action=browse_playlists&applyfilter=featured' },
         { 'Ricerca Musica': 'plugin://plugin.video.spotitube/?mode=SearchDeezer&amp;url'},      
         { 'Radio': 'plugin://plugin.audio.radio_de/' }
