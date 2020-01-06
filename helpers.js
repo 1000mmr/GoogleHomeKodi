@@ -581,7 +581,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             }
             let dayN = day.toString()
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startMin} - ${stopMin}`);
-            let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + startMin + '/' + stopMin + '/' dayN + '/');
+            let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + startMin + '/' + stopMin + '/' +  dayN + '/');
             return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
                    'window': 'videos',
                    'parameters': [url]
