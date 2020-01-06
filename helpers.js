@@ -577,11 +577,10 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             let channelFound = searchResult[0];
 
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startMin} - ${stopMin}`);
-            let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.channelid + '/' + startMin + '/' + stopMin);
-            let puliUrl=url.replace(" ","+");
+            let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + startMin + '/' + stopMin + '/');
             return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
                    'window': 'videos',
-                   'parameters': [puliUrl]
+                   'parameters': [url]
             });
         });
 };
