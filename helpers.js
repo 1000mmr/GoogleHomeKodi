@@ -463,7 +463,7 @@ const tryPlayingChannelInGroup = (searchOptions, reqChannel, chGroups, currGroup
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'alltv',
+        channelgroupid: 'Tutti i canali',
         properties: ['uniqueid', 'channelnumber']
     };
 
@@ -499,7 +499,7 @@ const kodiPlayChannel = (request, response, searchOptions) => {
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'alltv',
+        channelgroupid: 'Tutti i canali',
         properties: ['uniqueid', 'channelnumber']
     };
     let Kodi = request.kodi;
@@ -527,6 +527,7 @@ const kodiPlayChannel = (request, response, searchOptions) => {
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
+            console.log(`Found PVR channel SEARCHRESULT ${searchResult}`);
             var channelFound = searchResult[0];
             var channelName = channelFound.label;
             if ((channelName.includes("+1")) && !(reqChannel.includes("+1"))) {
@@ -548,7 +549,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
 
     // Build filter to search for all channel under the channel group
     let param = {
-        channelgroupid: 'alltv',
+        channelgroupid: 'Tutti i canali',
         properties: ['uniqueid', 'channelnumber']
     };
     let Kodi = request.kodi;
