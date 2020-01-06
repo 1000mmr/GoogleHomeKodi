@@ -574,10 +574,10 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
-            let channelFound = searchResult[0];
-            let channelName = channelFound.label;
+            var channelFound = searchResult[0];
+            var channelName = channelFound.label;
             if (channelName.includes("+1")) {
-                let channelFound = searchResult[1];
+                var channelFound = searchResult[1];
             }
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startMin} - ${stopMin}`);
             let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + startMin + '/' + stopMin + '/');
