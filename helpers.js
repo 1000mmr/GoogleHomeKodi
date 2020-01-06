@@ -568,16 +568,20 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
             // Create the fuzzy search object
             let fuse = new Fuse(rChannels, searchOptions);
             let searchResult = fuse.search(reqChannel);
-            let stopNum = JSON.stringify(stopNum)
+            let stopMin = stopNum.toString();
+            let startMin = startNum.replace(" per","" ).replace(" ","");
+
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
             let channelFound = searchResult[0];
 
-            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startNum} - ${stopNum}`);
+            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startMin} - ${stopMin}`);
+            let url=('plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.channelid + '/' + startMin + '/' + stopMin);
+            let puliUrl=url.replace(" ","+");
             return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
                    'window': 'videos',
-                   'parameters': ['plugin://plugin.video.iptv.recorder/record_one_time_vocal_oggi/' + channelFound.label + '/' + channelFound.channelid + '/' + startNum + '/' + stopNum]
+                   'parameters': [puliUrl]
             });
         });
 };
