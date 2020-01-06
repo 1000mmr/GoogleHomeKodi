@@ -575,7 +575,7 @@ const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNu
                 throw new Error('channels not found');
             }
             let channelFound = searchResult[0];
-            if (channelFound.includes("+1")) {
+            if ((channelFound.label).includes("+1")) {
                 let channelFound = searchResult[1];
             }
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${startMin} - ${stopMin}`);
