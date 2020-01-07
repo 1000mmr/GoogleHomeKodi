@@ -959,8 +959,11 @@ exports.kodiPlaySong = (request, response) => { // eslint-disable-line no-unused
     return kodiFindSong(songTitle, Kodi)
         .then((data) => Kodi.Player.Open({ // eslint-disable-line new-cap
             item: {
-                songid: data.songid,
-                albumid: data.albumid
+                songid: data.songid
+            },
+            parameters: { 
+                albumid: data.albumid,
+                pathid: data.pathid
             }
         }));
 };
