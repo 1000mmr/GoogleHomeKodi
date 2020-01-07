@@ -527,8 +527,14 @@ const kodiPlayChannel = (request, response, searchOptions) => {
             if (searchResult.length === 0) {
                 throw new Error('channels not found');
             }
-            console.log(`Found PVR channel SEARCHRESULT ${searchResult}`);
+
             var channelFound = searchResult[0];
+            var channelFounduno = searchResult[1];
+            var channelFounddue = searchResult[2];
+            var channelFoundtre = searchResult[3];
+            var channelFoundquattro = searchResult[4];
+            var channelFoundcinque = searchResult[5];
+            console.log(`Found PVR channel ${channelFound.label} - ${channelFounduno.label} (${channelFounddue.label}) ${channelFoundtre.label} - ${channelFoundquattro.label} (${channelFoundcinque.label})`);
             var channelName = channelFound.label;
             if ((channelName.includes("+1")) && !(reqChannel.includes("+1"))) {
                 var channelFound = searchResult[1];
