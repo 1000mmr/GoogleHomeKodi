@@ -13,7 +13,7 @@ const fuzzySearchOptions = {
     caseSensitive: false, // Don't care about case whenever we're searching titles by speech
     includeScore: false, // Don't need the score, the first item has the highest probability
     shouldSort: true, // Should be true, since we want result[0] to be the item with the highest probability
-    threshold: 0.1, // 0 = perfect match, 1 = match all..
+    threshold: 0.2, // 0 = perfect match, 1 = match all..
     location: 0,
     distance: 100,
     tokenize: true,
@@ -952,14 +952,15 @@ exports.kodiSeekBackwardMinutes = (request, response) => { // eslint-disable-lin
 exports.kodiPlaySong = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
 
-    let songTitle = request.query.q;
+    var songTitle = request.query.q;
     let Kodi = request.kodi;
-
+    var songTitle = songTitle.replace(" ' ", "'");
     console.log(`Song request received to play "${songTitle}"`);
     return kodiFindSong(songTitle, Kodi)
         .then((data) => Kodi.Player.Open({ // eslint-disable-line new-cap
             item: {
                 songid: data.songid
+                albumid: data.albumid
             }
         }));
 };
