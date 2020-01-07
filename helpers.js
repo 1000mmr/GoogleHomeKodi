@@ -493,8 +493,11 @@ const tryPlayingChannelInGroup = (searchOptions, reqChannel, chGroups, currGroup
 };
 
 const kodiPlayChannel = (request, response, searchOptions) => {
-    let reqChannel = request.query.q.trim();
-
+    var reqChannel = request.query.q.trim();
+    var reqChannel = reqChannel.toLowerCase();
+    var reqChannel = reqChannel.replace('sky cinema 2','sky cinema due');
+    var reqChannel = reqChannel.replace('sky cinema 1','sky cinema uno');
+    var reqChannel = reqChannel.replace('sky 1','sky uno');
     console.log(`PVR channel request received to play "${reqChannel}"`);
 
     // Build filter to search for all channel under the channel group
@@ -604,10 +607,13 @@ exports.kodiRecordChannelDopoDomani = (request, response) => { // eslint-disable
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
     let splittedQuery = fullQuery.split('dalle');
-    let chTitle = splittedQuery[0].trim();
+    var chTitle = splittedQuery[0].trim();
     let startNum = splittedQuery[1].trim();
     let stopNum = request.query.e.trim();
     let day = 2
+    var chTitle = chTitle.replace('sky cinema 2','sky cinema due');
+    var chTitle = chTitle.replace('sky cinema 1','sky cinema uno');
+    var chTitle = chTitle.replace('sky 1','sky uno');
     console.log(`Rec query ${chTitle} Season ${startNum} Episode ${stopNum}`);
     return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,startNum,stopNum,day);
 };
@@ -616,10 +622,13 @@ exports.kodiRecordChannelDomani = (request, response) => { // eslint-disable-lin
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
     let splittedQuery = fullQuery.split('dalle');
-    let chTitle = splittedQuery[0].trim();
+    var chTitle = splittedQuery[0].trim();
     let startNum = splittedQuery[1].trim();
     let stopNum = request.query.e.trim();
     let day = 1
+    var chTitle = chTitle.replace('sky cinema 2','sky cinema due');
+    var chTitle = chTitle.replace('sky cinema 1','sky cinema uno');
+    var chTitle = chTitle.replace('sky 1','sky uno');
 
     console.log(`Rec query ${chTitle} Season ${startNum} Episode ${stopNum}`);
     return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,startNum,stopNum,day);
@@ -629,10 +638,13 @@ exports.kodiRecordChannelByName = (request, response) => { // eslint-disable-lin
     tryActivateTv(request, response);
     let fullQuery = request.query.q.toLowerCase();
     let splittedQuery = fullQuery.split('dalle');
-    let chTitle = splittedQuery[0].trim();
+    var chTitle = splittedQuery[0].trim();
     let startNum = splittedQuery[1].trim();
     let stopNum = request.query.e.trim();
     let day = 0
+    var chTitle = chTitle.replace('sky cinema 2','sky cinema due');
+    var chTitle = chTitle.replace('sky cinema 1','sky cinema uno');
+    var chTitle = chTitle.replace('sky 1','sky uno');
 
     console.log(`Rec query ${chTitle} Season ${startNum} Episode ${stopNum}`);
     return kodiRecChannel(request, response, fuzzySearchOptions,chTitle,startNum,stopNum,day);
