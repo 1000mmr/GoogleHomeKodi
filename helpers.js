@@ -383,7 +383,7 @@ const kodiFindSong = (songTitle, Kodi) => {
             if (!(songs && songs.result && songs.result.songs && songs.result.songs.length > 0)) {
                 throw new Error('Your kodi library does not contain a single song!');
             }
-
+            console.log(`Song       ${songs.result.songs}`);
             return fuzzySearchBestMatch(songs.result.songs, songTitle);
         });
 };
