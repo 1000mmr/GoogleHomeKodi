@@ -171,6 +171,7 @@ app.all('/shuffleshow', exec(Helper.kodiShuffleShowHandler));
 // Parse request to watch a PVR channel by name
 // Request format:     http://[THIS_SERVER_IP_ADDRESS]/playpvrchannelbyname?q=[CHANNEL_NAME]
 app.all('/deleterec', exec(Helper.kodiDeleteRecord));
+app.all('/recplaychannel', exec(Helper.kodiRecordPlayChannel));
 app.all('/recpvrchanneldopodomani', exec(Helper.kodiRecordChannelDopoDomani));
 app.all('/recpvrchanneldomani', exec(Helper.kodiRecordChannelDomani));
 app.all('/recpvrchannelbyname', exec(Helper.kodiRecordChannelByName));

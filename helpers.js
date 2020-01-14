@@ -551,6 +551,67 @@ const kodiPlayChannel = (request, response, searchOptions) => {
         });
 };
 
+exports.kodiRecordPlayChannel = (request, response) => { // eslint-disable-line no-unused-vars
+    tryActivateTv(request, response);
+    var chTitle = request.query.q.toLowerCase();
+    let Qhours = request.query.e.trim();
+    var chTitle = chTitle.replace('sky cinema 2','sky cinema due');
+    var chTitle = chTitle.replace('sky cinema 1','sky cinema uno');
+    var chTitle = chTitle.replace('sky 1','sky uno');
+    var chTitle = chTitle.replace(" per","" );
+    console.log(`RecPlay query ${chTitle} ore ${Qhours}`);
+    return kodiRecPlayChannel(request, response, fuzzySearchOptions,chTitle,Qhours);
+
+const kodiRecPlayChannel = (request, response, searchOptions,chTitle,Qhours) => {
+    let reqChannel = chTitle;
+
+    console.log(`PVR channel request received to rec "${reqChannel}"`);
+
+    // Build filter to search for all channel under the channel group
+    let param = {
+        channelgroupid: 'alltv',
+        properties: ['uniqueid', 'channelnumber']
+    };
+    let Kodi = request.kodi;
+
+    return Kodi.PVR.GetChannels(param) // eslint-disable-line new-cap
+        .then((channels) => {
+            if (!(channels && channels.result && channels.result.channels && channels.result.channels.length > 0)) {
+                throw new Error('no channels were found');
+            }
+
+            let rChannels = channels.result.channels;
+
+            // We need to override getFn, as we're trying to search an integer.
+            searchOptions.getFn = (obj, path) => {
+                if (Number.isInteger(obj[path])) {
+                    return JSON.stringify(obj[path]);
+                }
+                return obj[path];
+            };
+
+            // Create the fuzzy search object
+            let fuse = new Fuse(rChannels, searchOptions);
+            let searchResult = fuse.search(reqChannel);
+            let Hore = Qhours.toString();
+
+            if (searchResult.length === 0) {
+                throw new Error('channels not found');
+            }
+            var channelFound = searchResult[0];
+            var channelName = channelFound.label;
+            if (channelName.includes("+1")) && !(reqChannel.includes("+1")) {
+                var channelFound = searchResult[1];
+            }
+            console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${Hore}`);
+            let url=('plugin://plugin.video.iptv.recorder/record_and_play_vocal/' + channelFound.label + '/' + Hore + '/');
+            return Kodi.GUI.ActivateWindow({ // eslint-disable-line new-cap
+                   'window': 'videos',
+                   'parameters': [url]
+            });
+        });
+};
+
 const kodiRecChannel = (request, response, searchOptions,chTitle,startNum,stopNum,day) => {
     let reqChannel = chTitle;
 
