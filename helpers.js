@@ -561,7 +561,7 @@ exports.kodiRecordPlayChannel = (request, response) => { // eslint-disable-line 
     var chTitle = chTitle.replace(" per","" );
     console.log(`RecPlay query ${chTitle} ore ${Qhours}`);
     return kodiRecPlayChannel(request, response, fuzzySearchOptions,chTitle,Qhours);
-
+};
 const kodiRecPlayChannel = (request, response, searchOptions,chTitle,Qhours) => {
     let reqChannel = chTitle;
 
