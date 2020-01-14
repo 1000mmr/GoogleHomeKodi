@@ -1346,7 +1346,7 @@ exports.kodiSearchYoutube = (request, response) => { // eslint-disable-line no-u
 };
 exports.kodiExecuteAddonUpdateEpi = (request) => {
     let kodi = request.kodi;
-    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/videolibrary_service.py`, kodi);
+    return kodiOpenVideoWindow( `ActivateWindow(plugin://plugin.video.SODbyHDs/?ewogICAgImFjdGlvbiI6ICJhZ2dWIiwgCiAgICAiY2F0ZWdvcnkiOiAiIiwgCiAgICAiY2hhbm5lbCI6ICJzZXR0aW5nIiwgCiAgICAiZmFuYXJ0IjogIiIsIAogICAgImluZm9MYWJlbHMiOiB7CiAgICAgICAgIm1lZGlhdHlwZSI6ICJ2aWRlbyIsIAogICAgICAgICJwbG90IjogImFnZ2lvcm5hIGVwaXNvZGkiCiAgICB9LCAKICAgICJ0aHVtYm5haWwiOiAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tLzEwMDBtbXIvaWNvbi9tYXN0ZXIvdGh1bWJfc2V0dGluZ18wLnBuZyIsIAogICAgInRpdGxlIjogIkFnZ2lvcm5hIFZpZGVvdGVjYSIsIAogICAgInRvdGFsSXRlbXMiOiAwCn0%3d`, kodi);
 };
 exports.kodiPlayYoutube = (request, response) => { // eslint-disable-line no-unused-vars
     let searchString = request.query.q.trim();
