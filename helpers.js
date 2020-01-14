@@ -600,7 +600,7 @@ const kodiRecPlayChannel = (request, response, searchOptions,chTitle,Qhours) => 
             }
             var channelFound = searchResult[0];
             var channelName = channelFound.label;
-            if ((channelName.includes("+1")) && (!(reqChannel.includes("+1")))) {
+            if (channelName.includes("+1")) {
                 var channelFound = searchResult[1];
             }
             console.log(`Found PVR channel ${channelFound.label} - ${channelFound.channelnumber} (${channelFound.channelid}) - ${Hore}`);
