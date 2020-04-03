@@ -383,7 +383,7 @@ const kodiFindSong = (songTitle, Kodi) => {
             if (!(songs && songs.result && songs.result.songs && songs.result.songs.length > 0)) {
                 throw new Error('Your kodi library does not contain a single song!');
             }
-            console.log(`Song       ${songs.result.songs}`);
+
             return fuzzySearchBestMatch(songs.result.songs, songTitle);
         });
 };
@@ -1013,18 +1013,14 @@ exports.kodiSeekBackwardMinutes = (request, response) => { // eslint-disable-lin
 exports.kodiPlaySong = (request, response) => { // eslint-disable-line no-unused-vars
     tryActivateTv(request, response);
 
-    var songTitle = request.query.q;
+    let songTitle = request.query.q;
     let Kodi = request.kodi;
-    var songTitle = songTitle.replace(" ' ", "'");
+
     console.log(`Song request received to play "${songTitle}"`);
     return kodiFindSong(songTitle, Kodi)
         .then((data) => Kodi.Player.Open({ // eslint-disable-line new-cap
             item: {
                 songid: data.songid
-            },
-            parameters: { 
-                albumid: data.albumid,
-                pathid: data.pathid
             }
         }));
 };
