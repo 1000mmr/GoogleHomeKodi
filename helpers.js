@@ -1551,6 +1551,13 @@ exports.kodiExecuteAddon = (request) => {
         .then((addon) => executeAddon(kodi, addon));
 };
 
+
+exports.kodiExecuteAddonMusic = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    return kodiOpenVideoWindow( `plugin://plugin.video.spotitube/?mode=SearchDeezerVocal&name=${requestedExtra}`, kodi);
+};
+
 exports.kodiExecuteAddonFilm = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
