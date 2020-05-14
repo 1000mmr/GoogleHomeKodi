@@ -24,10 +24,10 @@
 const KodiWindows = [
     { 'Videos': [
         { '': 'library://video/' },
-        { 'Registrazioni TV': '/storage/Downloads/TV/' },
+        { 'Registrazioni TV': '/storage/videos/Registrazioni TV/' },
         { 'Registrazioni in corso': 'plugin://plugin.video.iptv.recorder/jobs' },
-        { 'Downloads web': '/storage/videos/Download_Web/' },
-        { 'Donwload torrent': 'smb://192.168.178.20/TORRENT/' },
+        { 'Downloads web': '/storage/videos/Downloads_Web/' },
+        { 'Donwload torrent': '/storage/torrent' },
         { 'Libreria Film': 'videodb://movies/' },
         { 'Generi Film': 'videodb://movies/genres/' },
         { 'Film': 'videodb://movies/titles/' },
