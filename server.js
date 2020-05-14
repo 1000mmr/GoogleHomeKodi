@@ -239,6 +239,8 @@ app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
 
 app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
+app.all('/cercaMusica', exec(Helper.kodiExecuteAddonMusic));
+
 app.all('/spotysearch', exec(Helper.kodiExecuteAddonSpotySearch));
 
 app.all('/updateepi', exec(Helper.kodiExecuteAddonUpdateEpi));
