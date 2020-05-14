@@ -231,6 +231,10 @@ app.all('/showWindow', exec(Helper.kodiShowWindow));
 
 app.all('/executeAddon', exec(Helper.kodiExecuteAddon));
 
+app.all('/cercaFilmTorrent', exec(Helper.kodiExecuteAddonFilmTorrent));
+
+app.all('/cercaSerieTorrent', exec(Helper.kodiExecuteAddonSerieTorrent));
+
 app.all('/cercaFilm', exec(Helper.kodiExecuteAddonFilm));
 
 app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
