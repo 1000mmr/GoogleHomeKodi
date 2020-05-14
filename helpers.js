@@ -1560,6 +1560,37 @@ exports.kodiExecuteAddonFilm = (request) => {
     let act = 'channel_search'
     return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/?channel=${chan}&mode=${mod}&contentType=${cont}&action=${act}&text=${requestedExtra}`, kodi);
 };
+
+
+exports.kodiExecuteAddonSerie = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let chan = 'search'
+    let mod = 'tvshow'
+    let cont = 'tvshow'
+    let act = 'channel_search'
+    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/?channel=${chan}&mode=${mod}&contentType=${cont}&action=${act}&text=${requestedExtra}`, kodi);
+};
+
+exports.kodiExecuteAddonFilmTorrent = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let chan = 'searching'
+    let cat = 'Torrent_Film'
+    let cont = 'movie'
+    let act = 'do_search'
+    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/?channel=${chan}&category=${cat}&contentType=${cont}&action=${act}&extra=${requestedExtra}`, kodi);
+};
+
+exports.kodiExecuteAddonSerieTorrent = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let chan = 'searching'
+    let cat = 'Torrent_Serie'
+    let cont = 'tvshow'
+    let act = 'do_search'
+    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/?channel=${chan}&category=${cat}&contentType=${cont}&action=${act}&extra=${requestedExtra}`, kodi);
+};
 exports.kodiExecuteAddonFilmxxx = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
@@ -1573,7 +1604,7 @@ exports.kodiExecuteAddonFilmxxx = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
-exports.kodiExecuteAddonSerie = (request) => {
+exports.kodiExecuteAddonSeriexxxx = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
