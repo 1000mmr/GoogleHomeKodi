@@ -1551,8 +1551,16 @@ exports.kodiExecuteAddon = (request) => {
         .then((addon) => executeAddon(kodi, addon));
 };
 
-
 exports.kodiExecuteAddonFilm = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let chan = 'search'
+    let mod = 'movie'
+    let cont = 'movie'
+    let act = 'channel_search'
+    return kodiOpenVideoWindow( `plugin://plugin.video.SODbyHDs/?channel=${chan}&mode=${mod}&contentType=${cont}&action=${act}&text=${requestedExtra}`, kodi);
+};
+exports.kodiExecuteAddonFilmxxx = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
     let params = { // eslint-disable-line new-cap
