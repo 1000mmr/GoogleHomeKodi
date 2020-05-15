@@ -1611,6 +1611,16 @@ exports.kodiExecuteAddonFilmxxx = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
+exports.kodiExecuteAddonSpotyPl = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.audio.spotify' ,params:{action:'browse_playlist'
+        ,vpq:requestedExtra}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
+
 exports.kodiExecuteAddonSeriexxxx = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
