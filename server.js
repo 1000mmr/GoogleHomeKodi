@@ -241,6 +241,8 @@ app.all('/cercaSerie', exec(Helper.kodiExecuteAddonSerie));
 
 app.all('/cercaMusica', exec(Helper.kodiExecuteAddonMusic));
 
+app.all('/spotyplay', exec(Helper.kodiExecuteAddonSpotyPl));
+
 app.all('/spotysearch', exec(Helper.kodiExecuteAddonSpotySearch));
 
 app.all('/updateepi', exec(Helper.kodiExecuteAddonUpdateEpi));
