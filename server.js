@@ -245,6 +245,8 @@ app.all('/spotyplay', exec(Helper.kodiExecuteAddonSpotyPl));
 
 app.all('/spotyalb', exec(Helper.kodiExecuteAddonSpotyAl));
 
+app.all('/spotyart', exec(Helper.kodiExecuteAddonSpotyAr));
+
 app.all('/spotytrk', exec(Helper.kodiExecuteAddonSpotyTr));
 
 app.all('/spotysearch', exec(Helper.kodiExecuteAddonSpotySearch));
