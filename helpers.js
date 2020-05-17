@@ -1631,6 +1631,15 @@ exports.kodiExecuteAddonSpotyAl = (request) => {
     return kodi.Addons.ExecuteAddon(params);
 };
 
+exports.kodiExecuteAddonSpotyTr = (request) => {
+    let kodi = request.kodi;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.audio.spotify' ,params:{action:'browse_savedtracks'
+        ,vpq:'vai'}
+    };
+    return kodi.Addons.ExecuteAddon(params);
+};
+
 exports.kodiExecuteAddonSeriexxxx = (request) => {
     let kodi = request.kodi;
     let requestedExtra = request.query.q;
