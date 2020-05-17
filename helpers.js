@@ -1628,6 +1628,16 @@ exports.kodiExecuteAddonSpotyAl = (request) => {
         addonid: 'plugin.audio.spotify' ,params:{action:'browse_album_vocal'
         ,vpq:requestedExtra}
     };
+    return kodi.Addons.ExecuteAddon(params);browse_artists_vocal
+};
+
+exports.kodiExecuteAddonSpotyAr = (request) => {
+    let kodi = request.kodi;
+    let requestedExtra = request.query.q;
+    let params = { // eslint-disable-line new-cap
+        addonid: 'plugin.audio.spotify' ,params:{action:'browse_artists_vocal'
+        ,vpq:requestedExtra}
+    };
     return kodi.Addons.ExecuteAddon(params);
 };
 
